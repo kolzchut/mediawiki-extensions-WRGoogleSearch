@@ -63,7 +63,7 @@ $GLOBALS['wgHooks']['ResourceLoaderGetConfigVars'][] = 'WRGoogleSearch::onResour
 # Define ResourceLoader js/css modules
 $modulesTemplate = array(
 	'localBasePath' => __DIR__ . '/modules',
-	'remoteExtPath' => 'WRGoogleSearch/modules',
+	'remoteExtPath' => 'WikiRights/WRGoogleSearch/modules',
 	'group' => 'ext.wrGoogleSearch',
 );
 
