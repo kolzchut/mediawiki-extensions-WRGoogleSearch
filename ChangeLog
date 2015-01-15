@@ -1,0 +1,17 @@
+Changelog
+==========
+
+1.0.0
+-----
+A much improved version of Google Search:
+
+- No additional search form in the special page;
+  the sidebar search is now used for it.
+- No loading of Google JS in regular pages;
+  we now just send the query to the special page
+- Page icon is Google CSE instead of a generic one,
+  in order to give proper credit.
+
+0.1.3
+-----
+The original version, based on Extension:GoogleSiteSearch (v2.0) by Ryan Finnie.
