@@ -33,17 +33,20 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 $GLOBALS['wgExtensionCredits']['specialpage'][] = array(
 	'path' => __FILE__,
 	'name' => 'WRGoogleSearch',
-	'author' => 'Dror Snir, Ryan Finnie',
+	'author' => array(
+		'Dror S. [FFS] ([http://www.kolzchut.org.il Kol-Zchut])',
+		'Ryan Finnie'
+	),
 	'url' => 'https://www.mediawiki.org/wiki/Extension:GoogleSiteSearch',
 	'descriptionmsg' => 'wrgooglesearch-desc',
 	'version' => '1.0.0',
 );
 
 # Default configuration globals
-	$GLOBALS['wgWRGoogleSearchCSEID'] = '';
-	$GLOBALS['wgWRGoogleSearchOnly'] = false;
-	$GLOBALS['wgWRGoogleSearchExemptGroups'] = array();
-	
+$GLOBALS['wgWRGoogleSearchCSEID'] = '';
+$GLOBALS['wgWRGoogleSearchOnly'] = false;
+$GLOBALS['wgWRGoogleSearchExemptGroups'] = array();
+
 # Define special page
 $GLOBALS['wgAutoloadClasses']['SpecialWRGoogleSearch'] = __DIR__ . '/SpecialWRGoogleSearch.php';
 $GLOBALS['wgAutoloadClasses']['WRGoogleSearch'] = __DIR__ . '/WRGoogleSearch.php';
@@ -51,10 +54,10 @@ $GLOBALS['wgAutoloadClasses']['WRGoogleSearch'] = __DIR__ . '/WRGoogleSearch.php
 # Define localization
 $GLOBALS['wgExtensionMessagesFiles']['WRGoogleSearch'] = __DIR__ . '/WRGoogleSearch.i18n.php';
 $GLOBALS['wgExtensionMessagesFiles']['WRGoogleSearchAlias'] = __DIR__  . '/WRGoogleSearch.alias.php';
-	$GLOBALS['wgSpecialPages']['WRGoogleSearch'] = 'SpecialWRGoogleSearch';
-	$GLOBALS['wgSpecialPageGroups']['WRGoogleSearch'] = 'redirects';
+$GLOBALS['wgSpecialPages']['WRGoogleSearch'] = 'SpecialWRGoogleSearch';
+$GLOBALS['wgSpecialPageGroups']['WRGoogleSearch'] = 'redirects';
 
-	
+
 # Define hooks
 $GLOBALS['wgHooks']['BeforePageDisplay'][] = 'WRGoogleSearch::onBeforePageDisplay';
 $GLOBALS['wgHooks']['ResourceLoaderGetConfigVars'][] = 'WRGoogleSearch::onResourceLoaderGetConfigVars';
@@ -83,8 +86,7 @@ $GLOBALS['wgResourceModules']['ext.wrGoogleSearch.special'] = $modulesTemplate +
 
 class WRGoogleSearch {
 	/** Add CSE ID to JS vars */
-	function onResourceLoaderGetConfigVars( &$vars )
-	{
+	function onResourceLoaderGetConfigVars( &$vars ) {
 		global $wgWRGoogleSearchCSEID;
 
 		if (!empty($wgWRGoogleSearchCSEID)) {
@@ -96,8 +98,7 @@ class WRGoogleSearch {
 	}
 
 	/** Load the RL module */
-	function onBeforePageDisplay( OutputPage &$out, Skin &$skin )
-	{
+	function onBeforePageDisplay( OutputPage &$out, Skin &$skin ) {
 		global $wgWRGoogleSearchOnly;
 		$user = $out->getUser();
 
@@ -108,13 +109,11 @@ class WRGoogleSearch {
 	}
 
 
-	static function isSpecialGoogleSearch( Title $title )
-	{
+	static function isSpecialGoogleSearch( Title $title ) {
 		return $title->isSpecial('WRGoogleSearch');
 	}
 
-	static function isUserExempt( User &$user )
-	{
+	static function isUserExempt( User &$user ) {
 		global $wgWRGoogleSearchExemptGroups;
 
 		$userGroups = $user->getEffectiveGroups(true);

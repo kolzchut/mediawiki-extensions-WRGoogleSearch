@@ -27,7 +27,7 @@ $messages['qqq'] = array(
 
 
 /** Hebrew (עברית)
- * @author Dror Snir
+ * @author Dror S. [FFS]
  */
 $messages['he'] = array(
 	'wrgooglesearch'	=> 'חיפוש באתר באמצעות גוגל',

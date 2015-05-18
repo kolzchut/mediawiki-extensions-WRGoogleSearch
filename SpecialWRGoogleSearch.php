@@ -1,8 +1,6 @@
 <?php
 /**
  * Special page to search the site using Google Custom Search Engine (CSE)
- *
- * @author Dror Snir
  */
 
 
