@@ -84,9 +84,12 @@ $GLOBALS['wgResourceModules']['ext.wrGoogleSearch.special'] = $modulesTemplate +
 	'position' => 'top',
 );
 
+unset( $modulesTemplate );
+
+
 class WRGoogleSearch {
 	/** Add CSE ID to JS vars */
-	function onResourceLoaderGetConfigVars( &$vars ) {
+	static function onResourceLoaderGetConfigVars( &$vars ) {
 		global $wgWRGoogleSearchCSEID;
 
 		if (!empty($wgWRGoogleSearchCSEID)) {
@@ -98,7 +101,7 @@ class WRGoogleSearch {
 	}
 
 	/** Load the RL module */
-	function onBeforePageDisplay( OutputPage &$out, Skin &$skin ) {
+	static function onBeforePageDisplay( OutputPage &$out, Skin &$skin ) {
 		global $wgWRGoogleSearchOnly;
 		$user = $out->getUser();
 
