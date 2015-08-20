@@ -1,6 +1,11 @@
 Changelog
 ==========
 
+1.0.1
+-----
+Do not take over inputboxes with class 'internalSearch'. This allows
+extension:SearchBoxes to maintain its search destinations.
+
 1.0.0
 -----
 A much improved version of Google Search:

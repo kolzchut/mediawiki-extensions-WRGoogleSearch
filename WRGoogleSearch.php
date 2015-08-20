@@ -7,7 +7,7 @@
  * WRGoogleSearch Extension for MediaWiki
  * Originally based on GoogleSiteSearch (v2.0) by Ryan Finnie
  *
- * Copyright (C) Dror Snir, Ryan Finnie
+ * Copyright (C) Dror S. & Kol-Zchut Ltd, Ryan Finnie
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ $GLOBALS['wgExtensionCredits']['specialpage'][] = array(
 	),
 	'url' => 'https://www.mediawiki.org/wiki/Extension:GoogleSiteSearch',
 	'descriptionmsg' => 'wrgooglesearch-desc',
-	'version' => '1.0.0',
+	'version' => '1.0.1',
 );
 
 # Default configuration globals
@@ -67,7 +67,6 @@ $GLOBALS['wgHooks']['ResourceLoaderGetConfigVars'][] = 'WRGoogleSearch::onResour
 $modulesTemplate = array(
 	'localBasePath' => __DIR__ . '/modules',
 	'remoteExtPath' => 'WikiRights/WRGoogleSearch/modules',
-	'group' => 'ext.wrGoogleSearch',
 );
 
 $GLOBALS['wgResourceModules']['ext.wrGoogleSearch.general'] = $modulesTemplate + array(
