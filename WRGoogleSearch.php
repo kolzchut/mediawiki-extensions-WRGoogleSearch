@@ -72,6 +72,7 @@ $modulesTemplate = array(
 $GLOBALS['wgResourceModules']['ext.wrGoogleSearch.general'] = $modulesTemplate + array(
 	'scripts' => 'ext.wrGoogleSearch.general.js',
 	'position' => 'bottom',
+	'dependencies' => 'mediawiki.util',
 );
 
 $GLOBALS['wgResourceModules']['ext.wrGoogleSearch.special'] = $modulesTemplate + array(
