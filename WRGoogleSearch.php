@@ -79,7 +79,7 @@ $GLOBALS['wgResourceModules']['ext.wrGoogleSearch.special'] = $modulesTemplate +
 	'scripts' => 'ext.wrGoogleSearch.special.js',
 	'styles' => array(
 		'ext.wrGoogleSearch.special.less',
-		'ext.wrGoogleSearch.results.less'
+		'ext.wrGoogleSearch.results.css'
 	),
 	'position' => 'top',
 );
