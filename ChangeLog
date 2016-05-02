@@ -1,6 +1,10 @@
 Changelog
 ==========
 
+1.1.0 2016-05-02
+-----
+New option to instruct Google to add a sitelinks search box (in Google's own search results).
+
 1.0.1
 -----
 Do not take over inputboxes with class 'internalSearch'. This allows

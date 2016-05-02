@@ -19,3 +19,8 @@ CONFIGURATION
 
 - $wgWRGoogleSearchExemptGroups = array( 'user' ). If $wgWRGoogleSearchOnly is true,
   this will be an array of user groups that still get the regular search.
+
+- $wgWRGoogleSearchEnableSitelinksSearch = true/false. Enabled by default,
+  adds the appropriate structured data for enabling a [Google sitelinks search box].
+  
+[Google sitelinks search box]: https://developers.google.com/structured-data/slsb-overview

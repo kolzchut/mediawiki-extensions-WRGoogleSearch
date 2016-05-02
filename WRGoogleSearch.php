@@ -39,13 +39,15 @@ $GLOBALS['wgExtensionCredits']['specialpage'][] = array(
 	),
 	'url' => 'https://www.mediawiki.org/wiki/Extension:GoogleSiteSearch',
 	'descriptionmsg' => 'wrgooglesearch-desc',
-	'version' => '1.0.1',
+	'version' => '1.1.0',
 );
 
 # Default configuration globals
 $GLOBALS['wgWRGoogleSearchCSEID'] = '';
 $GLOBALS['wgWRGoogleSearchOnly'] = false;
 $GLOBALS['wgWRGoogleSearchExemptGroups'] = array();
+$GLOBALS['wgWRGoogleSearchEnableSitelinksSearch'] = true;
+
 
 # Define special page
 $GLOBALS['wgAutoloadClasses']['SpecialWRGoogleSearch'] = __DIR__ . '/SpecialWRGoogleSearch.php';
@@ -61,7 +63,7 @@ $GLOBALS['wgSpecialPageGroups']['WRGoogleSearch'] = 'redirects';
 # Define hooks
 $GLOBALS['wgHooks']['BeforePageDisplay'][] = 'WRGoogleSearch::onBeforePageDisplay';
 $GLOBALS['wgHooks']['ResourceLoaderGetConfigVars'][] = 'WRGoogleSearch::onResourceLoaderGetConfigVars';
-
+$GLOBALS['wgHooks']['SkinAfterBottomScripts'][] = 'WRGoogleSearch::onSkinAfterBottomScripts';
 
 # Define ResourceLoader js/css modules
 $modulesTemplate = array(
@@ -96,6 +98,38 @@ class WRGoogleSearch {
 			/* Add the ID, necessary for the RL module */
 			$vars['wgWRGoogleSearchCSEID'] = $wgWRGoogleSearchCSEID;
 		};
+
+		return true;
+	}
+
+	public static function onSkinAfterBottomScripts( Skin $skin, &$text ) {
+		global $wgWRGoogleSearchEnableSitelinksSearch, $wgWRGoogleSearchCSEID;
+		if( !$wgWRGoogleSearchEnableSitelinksSearch
+		    || empty( $wgWRGoogleSearchCSEID )
+			|| !$skin->getTitle()->isMainPage()
+		) {
+			return true;
+		}
+
+		$mainPageUrl = Title::newFromText( wfMessage( 'mainpage' )->plain() )->getFullURL();
+		$searchUrl = SpecialPage::getTitleFor( 'WRGoogleSearch' )->getFullURL();
+
+		$sitelinksSearch = <<<HTML
+\n	<script type="application/ld+json">
+		{
+			"@context": "http://schema.org",
+	  		"@type": "WebSite",
+			"url": "{$mainPageUrl}",
+			"potentialAction": {
+				"@type": "SearchAction",
+			    "target": "{$searchUrl}?q={search_term_string}",
+			    "query-input": "required name=search_term_string"
+	  		}
+		}
+	</script>\n
+HTML;
+
+		$text .= $sitelinksSearch;
 
 		return true;
 	}
