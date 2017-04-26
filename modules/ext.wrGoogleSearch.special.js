@@ -1,53 +1,72 @@
 /**
  * Google Custom Search in [[Special:Search]]
- * (c) 2014 Kol-Zchut Ltd. & Dror Snir <dror.snir@kolzchut.org.il>
+ * (c) 2014-2017 Kol-Zchut Ltd. & Dror S. [FFS]
  * GPLv2 or later
  *
  */
 
 /* global mediaWiki */
 ( function ( mw, $ ) {
-    "use strict";
-
-	var googleSearchControl;
+    'use strict';
 
 	mw.wrGoogleSearch = {
+		googleSearchControl: null,
 
 		init: function() {
-			$.ajaxSetup({ cache: true });
-			$.getScript('//www.google.com/jsapi', function() {
-				/* global google */
-				var lang = mw.config.get( 'wgContentLanguage' );
-				var cseID = mw.config.get( 'wgWRGoogleSearchCSEID' );
-				google.load('search', '1', { nocss: true, language : lang, callback : function() {	//style: google.loader.themes.V2_DEFAULT
-					//$.removeSpinner( 'googleSearchLoading' );
-					var customDrawOptions = new google.search.DrawOptions();
-					customDrawOptions.enableSearchResultsOnly();
-					googleSearchControl = new google.search.CustomSearchControl(cseID);
+			/* Do not automatically parse tags, run callback on load */
+			window.__gcse = {
+				parsetags: 'explicit',
+				callback: this.googleOnLoadCallback
+			};
 
-					googleSearchControl.setRefinementStyle(google.search.SearchControl.REFINEMENT_AS_TAB);
-					googleSearchControl.draw('googleSearchResults', customDrawOptions);
-					googleSearchControl.startHistoryManagement(function () {
-					});
-					googleSearchControl.setLinkTarget(google.search.Search.LINK_TARGET_SELF);
-
-					googleSearchControl.setSearchStartingCallback(this, function (searchControl, searcher, query) {
-						$('.mw-searchInput').val(query);
-					});
-					mw.wrGoogleSearch.getInitialQuery();
-
-				}});
-			});
+			var cseID = mw.config.get('wgWRGoogleSearchCSEID');
+			var cseScript = '//cse.google.com/cse.js?cx=' + cseID;
+			mw.loader.load( cseScript );
 
 			$(document).ready(function() {
 				$('.form-search').submit(function (event) {
 					var $searchInput = $(this).find('.mw-searchInput');
 					var query = $searchInput.val();
 					mw.wrGoogleSearch.executeSearch(query);
-					//$searchInput.removeClass('googleBranded');
 					event.preventDefault();
 				});
 			});
+		},
+
+		googleOnLoadCallback: function() {
+			if( document.readyState === 'complete' ) {
+				// Document is ready when CSE element is initialized
+				mw.wrGoogleSearch.renderGoogleSearchElements();
+			} else {
+				// Document is not ready yet when CSE element is initialized
+				google.setOnLoadCallback(function() {
+					mw.wrGoogleSearch.renderGoogleSearchElements();
+				}, true);
+			}
+		},
+
+		renderGoogleSearchElements: function() {
+			$( '#googleSearchLoading' ).hide();
+
+			var googleSearchControl = this.googleSearchControl = google.search.cse.element;
+			googleSearchControl.render({
+				div: 'googleSearchResults',
+				tag: 'searchresults-only',
+				gname: 'searchresults-block',
+				attributes: {
+					enableHistory: true,
+					refinementStyle: 'tab',
+					linkTarget: '_self'
+				}
+			});
+
+			/*
+			 googleSearchControl.setSearchStartingCallback(this, function (searchControl, searcher, query) {
+			 $('.mw-searchInput').val(query);
+			 });
+			 mw.wrGoogleSearch.getInitialQuery();
+
+			 */
 		},
 
 		getHashParam: function (key) {
@@ -60,7 +79,7 @@
 
 		executeSearch: function( query ) {
 			mw.log( 'Search form submitted. Query is: ' + query );
-			googleSearchControl.execute( query );
+			this.googleSearchControl.getElement('searchresults-block').execute( query );
 		},
 
 		getInitialQuery: function() {

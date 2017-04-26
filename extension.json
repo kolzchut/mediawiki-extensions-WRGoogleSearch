@@ -33,8 +33,7 @@
 		"ext.wrGoogleSearch.special": {
 			"scripts": "ext.wrGoogleSearch.special.js",
 			"styles": [
-				"ext.wrGoogleSearch.special.less",
-				"ext.wrGoogleSearch.results.css"
+				"ext.wrGoogleSearch.special.less"
 			],
 			"position": "top"
 		}
