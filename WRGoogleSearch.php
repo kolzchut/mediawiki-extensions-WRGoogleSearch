@@ -54,7 +54,6 @@ $wgAutoloadClasses['WRGoogleSearchHooks'] = __DIR__ . '/WRGoogleSearch.hooks.php
 
 # Define special page
 $wgSpecialPages['WRGoogleSearch'] = 'SpecialWRGoogleSearch';
-$wgSpecialPageGroups['WRGoogleSearch'] = 'redirects';
 
 # Define localization
 $wgMessagesDirs['WRGoogleSearch'] = __DIR__ . '/i18n';

@@ -84,4 +84,13 @@ class SpecialWRGoogleSearch extends SpecialPage {
 		}
 	}
 
+	/**
+	 * Same as in SpecialSearch, which we don't inherit from because it's too different
+	 *
+	 * @return string
+	 */
+	protected function getGroupName() {
+		return 'pages';
+	}
+
 }
