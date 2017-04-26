@@ -1,0 +1,58 @@
+{
+	"name": "WRGoogleSearch",
+	"version": "1.1.1",
+	"author": [
+		"Dror S. [FFS] ([http://www.kolzchut.org.il Kol-Zchut])",
+		"Ryan Finnie"
+	],
+	"url": "https://www.mediawiki.org/wiki/Extension:GoogleSiteSearch",
+	"descriptionmsg": "wrgooglesearch-desc",
+	"license-name": "GPL-2.0+",
+	"type": "specialpage",
+	"SpecialPages": {
+		"WRGoogleSearch": "SpecialWRGoogleSearch"
+	},
+	"MessagesDirs": {
+		"WRGoogleSearch": [
+			"i18n"
+		]
+	},
+	"ExtensionMessagesFiles": {
+		"WRGoogleSearchAlias": "WRGoogleSearch.alias.php"
+	},
+	"AutoloadClasses": {
+		"SpecialWRGoogleSearch": "SpecialWRGoogleSearch.php",
+		"WRGoogleSearchHooks": "WRGoogleSearch.hooks.php"
+	},
+	"ResourceModules": {
+		"ext.wrGoogleSearch.general": {
+			"scripts": "ext.wrGoogleSearch.general.js",
+			"position": "bottom",
+			"dependencies": "mediawiki.util"
+		},
+		"ext.wrGoogleSearch.special": {
+			"scripts": "ext.wrGoogleSearch.special.js",
+			"styles": [
+				"ext.wrGoogleSearch.special.less",
+				"ext.wrGoogleSearch.results.css"
+			],
+			"position": "top"
+		}
+	},
+	"ResourceFileModulePaths": {
+		"localBasePath": "modules",
+		"remoteExtPath": "WikiRights/WRGoogleSearch/modules"
+	},
+	"Hooks": {
+		"BeforePageDisplay": "WRGoogleSearchHooks::onBeforePageDisplay",
+		"ResourceLoaderGetConfigVars": "WRGoogleSearchHooks::onResourceLoaderGetConfigVars",
+		"SkinAfterBottomScripts": "WRGoogleSearchHooks::onSkinAfterBottomScripts"
+	},
+	"config": {
+		"WRGoogleSearchCSEID": "",
+		"WRGoogleSearchOnly": false,
+		"WRGoogleSearchExemptGroups": [],
+		"WRGoogleSearchEnableSitelinksSearch": true
+	},
+	"manifest_version": 1
+}
