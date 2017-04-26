@@ -30,61 +30,61 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 	die( 1 );
 }
 
-$GLOBALS['wgExtensionCredits']['specialpage'][] = array(
+$wgExtensionCredits['specialpage'][] = [
 	'path' => __FILE__,
 	'name' => 'WRGoogleSearch',
-	'author' => array(
+	'author' => [
 		'Dror S. [FFS] ([http://www.kolzchut.org.il Kol-Zchut])',
 		'Ryan Finnie'
-	),
+	],
 	'url' => 'https://www.mediawiki.org/wiki/Extension:GoogleSiteSearch',
 	'descriptionmsg' => 'wrgooglesearch-desc',
 	'version' => '1.1.0',
-);
+];
 
 # Default configuration globals
-$GLOBALS['wgWRGoogleSearchCSEID'] = '';
-$GLOBALS['wgWRGoogleSearchOnly'] = false;
-$GLOBALS['wgWRGoogleSearchExemptGroups'] = array();
-$GLOBALS['wgWRGoogleSearchEnableSitelinksSearch'] = true;
+$wgWRGoogleSearchCSEID = '';
+$wgWRGoogleSearchOnly = false;
+$wgWRGoogleSearchExemptGroups = [];
+$wgWRGoogleSearchEnableSitelinksSearch = true;
 
 
 # Define special page
-$GLOBALS['wgAutoloadClasses']['SpecialWRGoogleSearch'] = __DIR__ . '/SpecialWRGoogleSearch.php';
-$GLOBALS['wgAutoloadClasses']['WRGoogleSearch'] = __DIR__ . '/WRGoogleSearch.php';
+$wgAutoloadClasses['SpecialWRGoogleSearch'] = __DIR__ . '/SpecialWRGoogleSearch.php';
+$wgAutoloadClasses['WRGoogleSearch'] = __DIR__ . '/WRGoogleSearch.php';
 
 # Define localization
-$GLOBALS['wgExtensionMessagesFiles']['WRGoogleSearch'] = __DIR__ . '/WRGoogleSearch.i18n.php';
-$GLOBALS['wgExtensionMessagesFiles']['WRGoogleSearchAlias'] = __DIR__  . '/WRGoogleSearch.alias.php';
-$GLOBALS['wgSpecialPages']['WRGoogleSearch'] = 'SpecialWRGoogleSearch';
-$GLOBALS['wgSpecialPageGroups']['WRGoogleSearch'] = 'redirects';
+$wgExtensionMessagesFiles['WRGoogleSearch'] = __DIR__ . '/WRGoogleSearch.i18n.php';
+$wgExtensionMessagesFiles['WRGoogleSearchAlias'] = __DIR__  . '/WRGoogleSearch.alias.php';
+$wgSpecialPages['WRGoogleSearch'] = 'SpecialWRGoogleSearch';
+$wgSpecialPageGroups['WRGoogleSearch'] = 'redirects';
 
 
 # Define hooks
-$GLOBALS['wgHooks']['BeforePageDisplay'][] = 'WRGoogleSearch::onBeforePageDisplay';
-$GLOBALS['wgHooks']['ResourceLoaderGetConfigVars'][] = 'WRGoogleSearch::onResourceLoaderGetConfigVars';
-$GLOBALS['wgHooks']['SkinAfterBottomScripts'][] = 'WRGoogleSearch::onSkinAfterBottomScripts';
+$wgHooks['BeforePageDisplay'][] = 'WRGoogleSearch::onBeforePageDisplay';
+$wgHooks['ResourceLoaderGetConfigVars'][] = 'WRGoogleSearch::onResourceLoaderGetConfigVars';
+$wgHooks['SkinAfterBottomScripts'][] = 'WRGoogleSearch::onSkinAfterBottomScripts';
 
 # Define ResourceLoader js/css modules
-$modulesTemplate = array(
+$modulesTemplate = [
 	'localBasePath' => __DIR__ . '/modules',
 	'remoteExtPath' => 'WikiRights/WRGoogleSearch/modules',
-);
+];
 
-$GLOBALS['wgResourceModules']['ext.wrGoogleSearch.general'] = $modulesTemplate + array(
+$wgResourceModules['ext.wrGoogleSearch.general'] = $modulesTemplate + [
 	'scripts' => 'ext.wrGoogleSearch.general.js',
 	'position' => 'bottom',
 	'dependencies' => 'mediawiki.util',
-);
+];
 
-$GLOBALS['wgResourceModules']['ext.wrGoogleSearch.special'] = $modulesTemplate + array(
+$wgResourceModules['ext.wrGoogleSearch.special'] = $modulesTemplate + [
 	'scripts' => 'ext.wrGoogleSearch.special.js',
-	'styles' => array(
+	'styles' => [
 		'ext.wrGoogleSearch.special.less',
 		'ext.wrGoogleSearch.results.css'
-	),
+	],
 	'position' => 'top',
-);
+];
 
 unset( $modulesTemplate );
 
