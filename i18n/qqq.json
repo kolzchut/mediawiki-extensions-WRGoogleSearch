@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Metalhead64",
+			"Shirayuki"
+		]
+	},
+	"wrgooglesearch-desc": "{{desc|name=Google Site Search|url=http://www.mediawiki.org/wiki/Extension:wrgooglesearch}}\n\"Google CSE\" stands for \"Google Custom Search Engine\". Example: https://www.google.com/cse/home?cx=010768530259486146519:twowe4zclqy",
+	"wrgooglesearch-loading": "Displayed before the Google CSE JavaScript replaces it with the actual search results.  Wiki markup is not allowed here; message will be converted to escaped HTML.\n{{Identical|Loading}}"
+}

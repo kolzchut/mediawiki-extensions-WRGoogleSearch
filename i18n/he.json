@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Dror S. [FFS]"
+		]
+	},
+	"wrgooglesearch": "חיפוש באתר באמצעות גוגל",
+	"wrgooglesearch-desc": "הוספת [//www.google.com/cse/manage/all חיפוש אתר מבוסס-גוגל] לתוצאות החיפוש הרגילות",
+	"wrgooglesearch-loading": "טוען את תוצאות החיפוש..."
+}

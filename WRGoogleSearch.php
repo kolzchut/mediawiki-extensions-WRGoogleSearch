@@ -48,17 +48,17 @@ $wgWRGoogleSearchOnly = false;
 $wgWRGoogleSearchExemptGroups = [];
 $wgWRGoogleSearchEnableSitelinksSearch = true;
 
-
-# Define special page
+# Load classes
 $wgAutoloadClasses['SpecialWRGoogleSearch'] = __DIR__ . '/SpecialWRGoogleSearch.php';
 $wgAutoloadClasses['WRGoogleSearchHooks'] = __DIR__ . '/WRGoogleSearch.hooks.php';
 
-# Define localization
-$wgExtensionMessagesFiles['WRGoogleSearch'] = __DIR__ . '/WRGoogleSearch.i18n.php';
-$wgExtensionMessagesFiles['WRGoogleSearchAlias'] = __DIR__  . '/WRGoogleSearch.alias.php';
+# Define special page
 $wgSpecialPages['WRGoogleSearch'] = 'SpecialWRGoogleSearch';
 $wgSpecialPageGroups['WRGoogleSearch'] = 'redirects';
 
+# Define localization
+$wgMessagesDirs['WRGoogleSearch'] = __DIR__ . '/i18n';
+$wgExtensionMessagesFiles['WRGoogleSearchAlias'] = __DIR__  . '/WRGoogleSearch.alias.php';
 
 # Define hooks
 $wgHooks['BeforePageDisplay'][] = 'WRGoogleSearchHooks::onBeforePageDisplay';

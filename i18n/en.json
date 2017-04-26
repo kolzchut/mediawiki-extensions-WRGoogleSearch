@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": []
+	},
+	"wrgooglesearch": "Search using Google",
+	"wrgooglesearch-desc": "Adds [//www.google.com/cse/manage/all Google CSE site search] to wiki search results",
+	"wrgooglesearch-loading": "Just a second, here goes..."
+}
