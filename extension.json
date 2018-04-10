@@ -32,6 +32,7 @@
 		},
 		"ext.wrGoogleSearch.special": {
 			"scripts": "ext.wrGoogleSearch.special.js",
+			"class": "HelenaResourceLoaderModule",
 			"styles": [
 				"ext.wrGoogleSearch.special.less"
 			],
