@@ -24,7 +24,7 @@
 			mw.loader.load( cseScript );
 
 			$(document).ready(function() {
-				$('.form-search').submit(function (event) {
+				$('.form-search, .searchForm').submit(function (event) {
 					var $searchInput = $(this).find('.mw-searchInput');
 					var query = $searchInput.val();
 					mw.wrGoogleSearch.executeSearch(query);
