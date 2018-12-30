@@ -56,7 +56,8 @@
 				attributes: {
 					enableHistory: true,
 					refinementStyle: 'tab',
-					linkTarget: '_self'
+					linkTarget: '_self',
+					personalizedAds: false
 				}
 			});
 
