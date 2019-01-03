@@ -1,13 +1,13 @@
 {
 	"name": "WRGoogleSearch",
-	"version": "1.1.1",
+	"version": "1.2.0",
 	"author": [
 		"Dror S. [FFS] ([http://www.kolzchut.org.il Kol-Zchut])",
 		"Ryan Finnie"
 	],
 	"url": "https://www.mediawiki.org/wiki/Extension:GoogleSiteSearch",
 	"descriptionmsg": "wrgooglesearch-desc",
-	"license-name": "GPL-2.0+",
+	"license-name": "GPL-2.0-or-later",
 	"type": "specialpage",
 	"SpecialPages": {
 		"WRGoogleSearch": "SpecialWRGoogleSearch"
@@ -46,7 +46,8 @@
 	"Hooks": {
 		"BeforePageDisplay": "WRGoogleSearchHooks::onBeforePageDisplay",
 		"ResourceLoaderGetConfigVars": "WRGoogleSearchHooks::onResourceLoaderGetConfigVars",
-		"SkinAfterBottomScripts": "WRGoogleSearchHooks::onSkinAfterBottomScripts"
+		"SkinAfterBottomScripts": "WRGoogleSearchHooks::onSkinAfterBottomScripts",
+		"GoogleAnalytics::SendPageView": "WRGoogleSearchHooks::onBeforeGoogleAnalyticsSendPageView"
 	},
 	"config": {
 		"WRGoogleSearchCSEID": "",

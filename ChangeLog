@@ -1,6 +1,17 @@
 Changelog
 ==========
 
+1.2.0 2019-01-03
+----
+Improved analytics:
+
+- Prevent extension:GoogleUniversalAnalytics from automatically sending a page view hit, because CSE
+is also sending one out.
+- Push a search event to Google Tag Manager's dataLayer
+
+1.1.1 (unknown date?)
+I have no idea what took place here, but apparently I released such a version.
+
 1.1.0 2016-05-02
 -----
 New option to instruct Google to add a sitelinks search box (in Google's own search results).

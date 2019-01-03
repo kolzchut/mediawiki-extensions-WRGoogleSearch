@@ -9,8 +9,7 @@ Adds Special:GoogleSearch which allows to use a Google CSE
 (Google Custom Search Engine). It can also replace the regular
 wiki search for all or select groups.
 
-CONFIGURATION
--------------
+## CONFIGURATION
 
 - $wgWRGoogleSearchCSEID = 'Your CSE ID here'.
   The search engine ID you get from Google.
@@ -24,3 +23,15 @@ CONFIGURATION
   adds the appropriate structured data for enabling a [Google sitelinks search box].
   
 [Google sitelinks search box]: https://developers.google.com/structured-data/slsb-overview
+
+## Features
+
+- Pushes the following event to Google Tag Manager's dataLayer:
+  ```
+    {
+        event: 'Site Search',
+        'event data': {
+            'search term': query
+        }
+    }
+  ```

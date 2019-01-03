@@ -22,7 +22,7 @@ class WRGoogleSearchHooks {
 			return true;
 		}
 
-		$mainPageUrl = Title::newFromText( wfMessage( 'mainpage' )->plain() )->getFullURL();
+		$mainPageUrl = Title::newMainPage()->getFullURL();
 		$searchUrl = SpecialPage::getTitleFor( 'WRGoogleSearch' )->getFullURL();
 
 		$sitelinksSearch = <<<HTML
@@ -66,6 +66,22 @@ HTML;
 		$userGroups = $user->getEffectiveGroups( true );
 		$match = array_intersect( $userGroups, $wgWRGoogleSearchExemptGroups );
 		return ( !empty( $match ) );
+	}
+
+	/**
+	 * This hook is part of Extension:GoogleUniversalAnalytics.
+	 * We use it here to stop the page view from being sent on our special page,
+	 * as CSE will send out an event itself in any case.
+	 *
+	 * @param $out OutputPage
+	 * @param $jsCode string JavaScript code for Google Universal Analytics snippet
+	 *
+	 * @return bool
+	 */
+	public static function onBeforeGoogleAnalyticsSendPageView( $out, &$jsCode ) {
+		if ( self::isSpecialGoogleSearch( $out->getTitle() ) ) {
+			return false;
+		}
 	}
 
 }
