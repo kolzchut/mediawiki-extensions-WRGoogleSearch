@@ -53,7 +53,7 @@ class SpecialWRGoogleSearch extends SpecialPage {
 
 		$out = $this->getOutput();
 		$out->addModuleStyles( 'ext.wrGoogleSearch.special' );
-		$out->addModuleScripts( 'ext.wrGoogleSearch.special' );
+		$out->addModules( 'ext.wrGoogleSearch.special' );
 		$term = $out->getRequest()->getText( 'q' );
 
 		$searchLoadingMsg = ( empty( $term ) ?
