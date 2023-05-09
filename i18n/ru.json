@@ -1,0 +1,10 @@
+{
+	"@metadata": {
+		"authors": [
+			"Tatiana Berlin"
+		]
+	},
+	"wrgooglesearch": "Поиск на сайте с помощью Google",
+	"wrgooglesearch-desc": "Добавление [//www.google.com/cse/manage/all поиск по сайту Google] в основные результаты поиска",
+	"wrgooglesearch-loading": "Загрузка результатов поиска..."
+}
