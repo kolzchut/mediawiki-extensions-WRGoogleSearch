@@ -2,7 +2,7 @@
 	"name": "WRGoogleSearch",
 	"version": "1.2.0",
 	"author": [
-		"Dror S. [FFS] ([http://www.kolzchut.org.il Kol-Zchut])",
+		"Dror S. [FFS] ([https://www.kolzchut.org.il Kol-Zchut])",
 		"Ryan Finnie"
 	],
 	"url": "https://www.mediawiki.org/wiki/Extension:GoogleSiteSearch",
@@ -32,11 +32,9 @@
 		},
 		"ext.wrGoogleSearch.special": {
 			"scripts": "ext.wrGoogleSearch.special.js",
-			"class": "HelenaResourceLoaderModule",
 			"styles": [
 				"ext.wrGoogleSearch.special.less"
-			],
-			"position": "top"
+			]
 		}
 	},
 	"ResourceFileModulePaths": {
