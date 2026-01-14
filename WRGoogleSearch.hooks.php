@@ -1,5 +1,7 @@
 <?php
 
+use MediaWiki\MediaWikiServices;
+
 class WRGoogleSearchHooks {
 	/** Add CSE ID to JS vars */
 	static function onResourceLoaderGetConfigVars( &$vars ) {
@@ -63,7 +65,10 @@ HTML;
 	static function isUserExempt( User &$user ) {
 		global $wgWRGoogleSearchExemptGroups;
 
-		$userGroups = $user->getEffectiveGroups( true );
+		// MW 1.43+: Use UserGroupManager service instead of User::getEffectiveGroups()
+		$userGroups = MediaWikiServices::getInstance()
+			->getUserGroupManager()
+			->getUserEffectiveGroups( $user );
 		$match = array_intersect( $userGroups, $wgWRGoogleSearchExemptGroups );
 		return ( !empty( $match ) );
 	}
