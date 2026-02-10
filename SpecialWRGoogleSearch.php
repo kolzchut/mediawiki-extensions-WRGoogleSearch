@@ -9,10 +9,10 @@ class SpecialWRGoogleSearch extends SpecialPage {
 		parent::__construct( 'WRGoogleSearch' );
 	}
 
-	function execute( $par ) {
+	function execute( $subPage ) {
 		// Strip underscores from title parameter; most of the time we'll want
 		// text from here. But don't strip underscores from actual text params!
-		$titleParam = str_replace( '_', ' ', $par );
+		$titleParam = str_replace( '_', ' ', $subPage );
 
 		$request = $this->getRequest();
 
@@ -68,20 +68,20 @@ class SpecialWRGoogleSearch extends SpecialPage {
 	/**
 	 * @param $term string
 	 */
-	protected function setupPage( $term ) {
+	protected function setupPage( string $term ) {
 		$this->setHeaders();
 		$this->outputHeader();
-		$out = $this->getOutput();
-		$out->allowClickjacking();
-		$out->addModuleStyles( 'mediawiki.special' );
+		$outputPage = $this->getOutput();
+		$outputPage->getMetadata()->setPreventClickjacking( false );
+		$outputPage->addModuleStyles( 'mediawiki.special' );
 
 		if ( strval( $term ) !== '' ) {
-			$out->setPageTitle( $this->msg( 'searchresults' ) );
+			$outputPage->setPageTitle( $this->msg( 'searchresults' ) );
 
 			$htmlTitleElement = $this->msg( 'pagetitle' )->rawParams(
 				$this->msg( 'searchresults-title' )->rawParams( $term )->text()
 			);
-			$out->setHTMLTitle( $htmlTitleElement );
+			$outputPage->setHTMLTitle( $htmlTitleElement );
 		}
 	}
 
@@ -90,7 +90,7 @@ class SpecialWRGoogleSearch extends SpecialPage {
 	 *
 	 * @return string
 	 */
-	protected function getGroupName() {
+	protected function getGroupName(): string {
 		return 'pages';
 	}
 
