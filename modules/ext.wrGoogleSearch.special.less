@@ -4,6 +4,7 @@
 	font-size: 18px;
 }
 
+/* stylelint-disable selector-class-pattern */
 // Hide labels
 .gs-per-result-labels {
 	display: none;
@@ -13,6 +14,7 @@
 .gs-web-image-box {
 	display: none;
 }
+/* stylelint-enable selector-class-pattern */
 
 /* Hard overrides using body.mw-special-WRGoogleSearch */
 body.mw-special-WRGoogleSearch {
@@ -24,6 +26,8 @@ body.mw-special-WRGoogleSearch {
 		background-repeat: no-repeat;
 	}
 
+	/** Override the default Google Search result title styles to match our site's design */
+	/* stylelint-disable selector-class-pattern */
 	.gs-result .gs-title {
 		color: var( --link-color, );
 		text-decoration: underline;
@@ -43,4 +47,5 @@ body.mw-special-WRGoogleSearch {
 	.gsc-control-cse .gs-snippet {
 		color: var( --content-text-color );
 	}
+	/* stylelint-enable selector-class-pattern */
 }
