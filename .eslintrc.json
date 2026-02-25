@@ -1,0 +1,10 @@
+{
+	"root": true,
+	"extends": [
+		"wikimedia/server"
+	],
+	"ignorePatterns": [
+		"package-lock.json",
+		"vendor/"
+	]
+}

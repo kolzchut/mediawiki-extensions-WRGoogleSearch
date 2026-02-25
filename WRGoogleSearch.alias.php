@@ -6,19 +6,19 @@
  * @ingroup Extensions
  */
 
-$specialPageAliases = array();
+$specialPageAliases = [];
 
 /** English (English) */
-$specialPageAliases['en'] = array(
-	'WRGoogleSearch' => array( 'GoogleSearch', 'Google_Search' ),
-);
+$specialPageAliases['en'] = [
+	'WRGoogleSearch' => [ 'GoogleSearch', 'Google_Search' ],
+];
 
 /** Hebrew (עברית) */
-$specialPageAliases['he'] = array(
-	'WRGoogleSearch' => array( 'חיפוש_גוגל', 'חיפוש_בגוגל' ),
-);
+$specialPageAliases['he'] = [
+	'WRGoogleSearch' => [ 'חיפוש_גוגל', 'חיפוש_בגוגל' ],
+];
 
 /** Arabic (العربية) */
-$specialPageAliases['ar'] = array(
-	'WRGoogleSearch' => array( 'بحث_جوجل', 'بحث_Google' ),
-);
+$specialPageAliases['ar'] = [
+	'WRGoogleSearch' => [ 'بحث_جوجل', 'بحث_Google' ],
+];

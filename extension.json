@@ -1,6 +1,6 @@
 {
 	"name": "WRGoogleSearch",
-	"version": "1.2.0",
+	"version": "1.4.0",
 	"author": [
 		"Dror S. [FFS] ([https://www.kolzchut.org.il Kol-Zchut])",
 		"Ryan Finnie"
@@ -9,8 +9,13 @@
 	"descriptionmsg": "wrgooglesearch-desc",
 	"license-name": "GPL-2.0-or-later",
 	"type": "specialpage",
+	"requires": {
+		"MediaWiki": ">= 1.43.0"
+	},
 	"SpecialPages": {
-		"WRGoogleSearch": "SpecialWRGoogleSearch"
+		"WRGoogleSearch": {
+			"class": "MediaWiki\\Extension\\WRGoogleSearch\\Special\\SpecialWRGoogleSearch"
+		}
 	},
 	"MessagesDirs": {
 		"WRGoogleSearch": [
@@ -20,14 +25,23 @@
 	"ExtensionMessagesFiles": {
 		"WRGoogleSearchAlias": "WRGoogleSearch.alias.php"
 	},
-	"AutoloadClasses": {
-		"SpecialWRGoogleSearch": "SpecialWRGoogleSearch.php",
-		"WRGoogleSearchHooks": "WRGoogleSearch.hooks.php"
+	"AutoloadNamespaces": {
+		"MediaWiki\\Extension\\WRGoogleSearch\\": "src/"
+	},
+	"HookHandlers": {
+		"main": {
+			"class": "MediaWiki\\Extension\\WRGoogleSearch\\Hooks",
+			"services": [ "MainConfig", "UserGroupManager" ]
+		}
+	},
+	"Hooks": {
+		"BeforePageDisplay": "main",
+		"ResourceLoaderGetConfigVars": "main",
+		"SkinAfterBottomScripts": "main"
 	},
 	"ResourceModules": {
 		"ext.wrGoogleSearch.general": {
 			"scripts": "ext.wrGoogleSearch.general.js",
-			"position": "bottom",
 			"dependencies": "mediawiki.util"
 		},
 		"ext.wrGoogleSearch.special": {
@@ -41,17 +55,19 @@
 		"localBasePath": "modules",
 		"remoteExtPath": "WikiRights/WRGoogleSearch/modules"
 	},
-	"Hooks": {
-		"BeforePageDisplay": "WRGoogleSearchHooks::onBeforePageDisplay",
-		"ResourceLoaderGetConfigVars": "WRGoogleSearchHooks::onResourceLoaderGetConfigVars",
-		"SkinAfterBottomScripts": "WRGoogleSearchHooks::onSkinAfterBottomScripts",
-		"GoogleAnalytics::SendPageView": "WRGoogleSearchHooks::onBeforeGoogleAnalyticsSendPageView"
-	},
 	"config": {
-		"WRGoogleSearchCSEID": "",
-		"WRGoogleSearchOnly": false,
-		"WRGoogleSearchExemptGroups": [],
-		"WRGoogleSearchEnableSitelinksSearch": true
+		"WRGoogleSearchCSEID": {
+			"value": ""
+		},
+		"WRGoogleSearchOnly": {
+			"value": false
+		},
+		"WRGoogleSearchExemptGroups": {
+			"value": []
+		},
+		"WRGoogleSearchEnableSitelinksSearch": {
+			"value": true
+		}
 	},
-	"manifest_version": 1
+	"manifest_version": 2
 }

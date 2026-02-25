@@ -5,15 +5,14 @@
  * GPLv2 or later
  */
 
-( function ( mw, $ ) {
-    'use strict';
-		$( document ).ready( function() {
-			$( '.mw-searchInput').not( '.internalSearch' ).each( function() {
-				var $parentForm = $( this ).closest( 'form' );
-				$( this ).attr( 'name', 'q' );
-				$parentForm.attr( 'action', mw.util.getUrl( 'Special:GoogleSearch') ); // Go to the Google Search Page
-			});
-		});
+'use strict';
 
-}( mediaWiki, jQuery ) );
+const googleSearchUrl = mw.util.getUrl( 'Special:GoogleSearch' );
 
+Array.prototype.forEach.call(
+	document.querySelectorAll( '.mw-searchInput:not(.internalSearch)' ),
+	( input ) => {
+		input.setAttribute( 'name', 'q' );
+		input.closest( 'form' ).setAttribute( 'action', googleSearchUrl );
+	}
+);

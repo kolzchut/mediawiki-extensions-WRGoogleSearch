@@ -1,42 +1,55 @@
 <?php
+
+namespace MediaWiki\Extension\WRGoogleSearch\Special;
+
+use MediaWiki\SpecialPage\SpecialPage;
+use MediaWiki\Title\Title;
+
 /**
  * Special page to search the site using Google Custom Search Engine (CSE)
  */
-
 class SpecialWRGoogleSearch extends SpecialPage {
 
-	function __construct() {
+	/**
+	 * @inheritDoc
+	 */
+	public function __construct() {
 		parent::__construct( 'WRGoogleSearch' );
 	}
 
-	function execute( $subPage ) {
+	/**
+	 * @inheritDoc
+	 */
+	public function execute( $subPage ): void {
 		// Strip underscores from title parameter; most of the time we'll want
 		// text from here. But don't strip underscores from actual text params!
-		$titleParam = str_replace( '_', ' ', $subPage );
+		$titleParam = str_replace( '_', ' ', (string)$subPage );
 
 		$request = $this->getRequest();
 
 		// Fetch the search term
-		$term = str_replace( "\n", " ", $request->getText( 'q', $titleParam ) );
+		$searchQuery = $request->getText( 'q', $titleParam ) ?? '';
+		$searchQuery = str_replace( "\n", " ", $searchQuery );
 
 		if ( $request->getVal( 'fulltext' ) ) {
-			$this->showResults( $term );
+			$this->showResults( $searchQuery );
 		} else {
-			$this->goResult( $term );  // Try to see if we got a direct hit
+			// Try to see if we got a direct hit
+			$this->goResult( $searchQuery );
 		}
 	}
 
 	/**
 	 * If an exact title match can be found, jump straight ahead to it.
 	 *
-	 * @param $term String
+	 * @param string|null $term
 	 */
-	public function goResult( $term ) {
+	public function goResult( ?string $term ): void {
 		# Try to go to page as entered.
 		$t = Title::newFromText( $term );
 
 		# If there's an exact match, jump right there.
-		if ( !is_null( $t ) && $t->isKnown() ) {
+		if ( $t !== null && $t->isKnown() ) {
 			$this->getOutput()->redirect( $t->getFullURL() );
 			return;
 		}
@@ -46,9 +59,10 @@ class SpecialWRGoogleSearch extends SpecialPage {
 	}
 
 	/**
-	 * @param $term String
+	 * @param string $term
+	 * @return void
 	 */
-	public function showResults( $term ) {
+	public function showResults( string $term ): void {
 		$this->setupPage( $term );
 
 		$out = $this->getOutput();
@@ -58,25 +72,26 @@ class SpecialWRGoogleSearch extends SpecialPage {
 
 		$searchLoadingMsg = ( empty( $term ) ?
 			''
-			: '<div id="googleSearchLoading">' . wfMessage( 'wrgooglesearch-loading' )->text() . '</div>' );
+			: '<div class="google-search-loading">' . $this->msg( 'wrgooglesearch-loading' )->text() . '</div>' );
 
-		$outhtml = "<div id=\"googleSearchResults\">{$searchLoadingMsg}</div>";
+		$outhtml = "<div id=\"googleSearchResults\">$searchLoadingMsg</div>";
 
-		$out->AddHTML( $outhtml );
+		$out->addHTML( $outhtml );
 	}
 
 	/**
-	 * @param $term string
+	 * @param string $term
+	 * @return void
 	 */
-	protected function setupPage( string $term ) {
+	protected function setupPage( string $term ): void {
 		$this->setHeaders();
 		$this->outputHeader();
 		$outputPage = $this->getOutput();
 		$outputPage->getMetadata()->setPreventClickjacking( false );
 		$outputPage->addModuleStyles( 'mediawiki.special' );
 
-		if ( strval( $term ) !== '' ) {
-			$outputPage->setPageTitle( $this->msg( 'searchresults' ) );
+		if ( $term !== '' ) {
+			$outputPage->setPageTitleMsg( $this->msg( 'searchresults' ) );
 
 			$htmlTitleElement = $this->msg( 'pagetitle' )->rawParams(
 				$this->msg( 'searchresults-title' )->rawParams( $term )->text()
@@ -88,10 +103,9 @@ class SpecialWRGoogleSearch extends SpecialPage {
 	/**
 	 * Same as in SpecialSearch, which we don't inherit from because it's too different
 	 *
-	 * @return string
+	 * @inheritDoc
 	 */
 	protected function getGroupName(): string {
 		return 'pages';
 	}
-
 }

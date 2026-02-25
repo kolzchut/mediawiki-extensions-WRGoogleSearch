@@ -1,1 +1,37 @@
-README
+WRGoogleSearch
+==============
+Copyright (C) Dror S. & Kol-Zchut Ltd, Ryan Finnie
+
+Originally based on GoogleSiteSearch (v2.0) by Ryan Finnie
+(http://www.mediawiki.org/wiki/Extension:GoogleSiteSearch)
+
+Adds Special:GoogleSearch which allows to use a Google CSE
+(Google Custom Search Engine). It can also replace the regular
+wiki search for all or select groups.
+
+## CONFIGURATION
+
+- $wgWRGoogleSearchCSEID = 'Your CSE ID here'.
+  The search engine ID you get from Google.
+
+- $wgWRGoogleSearchOnly = true/false. Whether to take over the regular search.
+
+- $wgWRGoogleSearchExemptGroups = array( 'user' ). If $wgWRGoogleSearchOnly is true,
+  this will be an array of user groups that still get the regular search.
+
+- $wgWRGoogleSearchEnableSitelinksSearch = true/false. Enabled by default,
+  adds the appropriate structured data for enabling a [Google sitelinks search box].
+  
+[Google sitelinks search box]: https://developers.google.com/structured-data/slsb-overview
+
+## Features
+
+- Pushes the following event to Google Tag Manager's dataLayer:
+  ```
+    {
+        event: 'Site Search',
+        'event data': {
+            'search term': query
+        }
+    }
+  ```
