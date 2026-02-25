@@ -13,7 +13,7 @@ const gs = mw.wrGoogleSearch = {
 
 	init: function () {
 		const cseID = mw.config.get( 'wgWRGoogleSearchCSEID' ),
-			cseScript = '//cse.google.com/cse.js?cx=' + cseID;
+			cseScript = 'https://cse.google.com/cse.js?cx=' + cseID;
 
 		/* Do not automatically parse tags, run callback on load */
 		// eslint-disable-next-line no-underscore-dangle
@@ -31,7 +31,7 @@ const gs = mw.wrGoogleSearch = {
 			document.querySelectorAll( '.form-search, .searchForm' ),
 			( form ) => {
 				form.addEventListener( 'submit', ( event ) => {
-					const query = form.querySelector( '.mw-searchInput' ).value;
+					const query = form.querySelector( '.mw-searchInput, #searchInput' ).value;
 					gs.executeSearch( query );
 					event.preventDefault();
 				} );
