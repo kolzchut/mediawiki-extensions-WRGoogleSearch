@@ -46,6 +46,7 @@
 		},
 		"ext.wrGoogleSearch.special": {
 			"scripts": "ext.wrGoogleSearch.special.js",
+			"dependencies": "mediawiki.util",
 			"styles": [
 				"ext.wrGoogleSearch.special.less"
 			]

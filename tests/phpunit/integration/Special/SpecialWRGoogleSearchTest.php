@@ -97,18 +97,45 @@ class SpecialWRGoogleSearchTest extends SpecialPageTestBase {
 	}
 
 	/**
+	 * The script runs the search from the term in the data attribute, so a
+	 * subpage-only search must carry the same term a 'q' search does.
+	 *
 	 * @dataProvider provideSearchInput
 	 */
-	public function testSearchTermShowsLoadingMessage( string $subPage, array $query ): void {
+	public function testSearchTermShowsLoadingMessageAndPassesTerm( string $subPage, array $query ): void {
 		$this->getNonexistingTestPage( 'WRGoogleSearch no such page' );
 
 		[ $html ] = $this->executeSpecialPage( $subPage, new FauxRequest( $query ) );
 
 		$this->assertSame( '', $this->getRedirect() );
 		$this->assertStringContainsString(
-			'<div id="googleSearchResults"><div class="google-search-loading">(wrgooglesearch-loading)</div></div>',
+			'<div id="googleSearchResults" data-search-term="WRGoogleSearch no such page">'
+				. '<div class="google-search-loading">(wrgooglesearch-loading)</div></div>',
 			$html
 		);
+	}
+
+	public function testQParameterWinsOverSubpage(): void {
+		$this->getNonexistingTestPage( 'WRGoogleSearch from q' );
+
+		[ $html ] = $this->executeSpecialPage(
+			'WRGoogleSearch from subpage',
+			new FauxRequest( [ 'q' => 'WRGoogleSearch from q' ] )
+		);
+
+		$this->assertStringContainsString( 'data-search-term="WRGoogleSearch from q"', $html );
+		$this->assertStringNotContainsString( 'WRGoogleSearch from subpage', $html );
+	}
+
+	public function testSearchTermAttributeIsEscaped(): void {
+		[ $html ] = $this->executeSpecialPage( 'kz"<b id=x>&y', new FauxRequest( [] ) );
+
+		$this->assertSame( '', $this->getRedirect() );
+		$this->assertStringContainsString(
+			'data-search-term="kz&quot;&lt;b id=x&gt;&amp;y"',
+			$html
+		);
+		$this->assertStringNotContainsString( '<b id=x>', $html );
 	}
 
 	public function testTermZeroShowsLoadingMessage(): void {
@@ -118,6 +145,7 @@ class SpecialWRGoogleSearchTest extends SpecialPageTestBase {
 
 		$this->assertSame( '', $this->getRedirect() );
 		$this->assertStringContainsString( '(wrgooglesearch-loading)', $html );
+		$this->assertStringContainsString( 'data-search-term="0"', $html );
 	}
 
 	public function testEmptySearchShowsNoLoadingMessage(): void {
@@ -126,6 +154,7 @@ class SpecialWRGoogleSearchTest extends SpecialPageTestBase {
 		$this->assertSame( '', $this->getRedirect() );
 		$this->assertStringContainsString( '<div id="googleSearchResults"></div>', $html );
 		$this->assertStringNotContainsString( 'wrgooglesearch-loading', $html );
+		$this->assertStringNotContainsString( 'data-search-term', $html );
 	}
 
 	public function testLoadingMessageIsEscaped(): void {

@@ -2,6 +2,7 @@
 
 namespace MediaWiki\Extension\WRGoogleSearch\Special;
 
+use MediaWiki\Html\Html;
 use MediaWiki\SpecialPage\SpecialPage;
 use MediaWiki\Title\Title;
 
@@ -75,9 +76,16 @@ class SpecialWRGoogleSearch extends SpecialPage {
 			''
 			: '<div class="google-search-loading">' . $this->msg( 'wrgooglesearch-loading' )->escaped() . '</div>' );
 
-		$outhtml = "<div id=\"googleSearchResults\">$searchLoadingMsg</div>";
-
-		$out->addHTML( $outhtml );
+		// Google's element reads the term only from 'q' or its own URL hash, so
+		// hand the script the term this page resolved, to run a subpage search.
+		$out->addHTML( Html::rawElement(
+			'div',
+			[
+				'id' => 'googleSearchResults',
+				'data-search-term' => $term === '' ? null : $term,
+			],
+			$searchLoadingMsg
+		) );
 	}
 
 	/**
