@@ -8,6 +8,7 @@ use MediaWiki\Interwiki\InterwikiLookupAdapter;
 use MediaWiki\MainConfigNames;
 use MediaWiki\Request\FauxRequest;
 use MediaWiki\Site\HashSiteStore;
+use MediaWiki\SpecialPage\SpecialPage;
 use MediaWiki\Title\Title;
 use SpecialPageTestBase;
 
@@ -69,9 +70,11 @@ class SpecialWRGoogleSearchTest extends SpecialPageTestBase {
 
 		$this->executeSpecialPage( $subPage, new FauxRequest( $query ) );
 
+		// Build the expected URL from the special page itself, not from a
+		// string: its name is localised in the content language (e.g. he).
+		$goToInterwiki = SpecialPage::getTitleFor( 'GoToInterwiki', $title->getPrefixedDBkey() );
 		$redirect = $this->getRedirect();
-		$this->assertSame( $title->getFullUrlForRedirect(), $redirect );
-		$this->assertStringContainsString( 'GoToInterwiki', $redirect );
+		$this->assertSame( $goToInterwiki->getFullURL(), $redirect );
 		$this->assertStringNotContainsString( self::EXTERNAL_HOST, $redirect );
 	}
 
@@ -97,13 +100,23 @@ class SpecialWRGoogleSearchTest extends SpecialPageTestBase {
 	}
 
 	public function testLoadingMessageIsEscaped(): void {
+		$markup = '<b id="kz-raw-markup">x</b>';
 		$this->overrideConfigValue( MainConfigNames::UseDatabaseMessages, true );
-		$this->editPage( 'MediaWiki:Wrgooglesearch-loading', '<b id="kz-raw-markup">x</b>' );
+		// An override on the base page applies to the content language, so
+		// render in that language too; otherwise the override never reaches
+		// the page and escaped and unescaped output look the same.
+		$contentLanguage = $this->getServiceContainer()->getContentLanguage()->getCode();
+		$this->editPage( 'MediaWiki:Wrgooglesearch-loading', $markup );
+		$this->assertSame(
+			$markup,
+			wfMessage( 'wrgooglesearch-loading' )->inLanguage( $contentLanguage )->plain(),
+			'precondition: the override is what the page will render'
+		);
 
 		[ $html ] = $this->executeSpecialPage(
 			'',
 			new FauxRequest( [ 'q' => 'WRGoogleSearch no such page' ] ),
-			'en'
+			$contentLanguage
 		);
 
 		$this->assertStringNotContainsString( '<b id="kz-raw-markup">', $html );
