@@ -86,17 +86,46 @@ class SpecialWRGoogleSearchTest extends SpecialPageTestBase {
 		$this->assertSame( $target->getFullURL(), $this->getRedirect() );
 	}
 
-	public function testUnknownTermShowsResultsPage(): void {
+	public static function provideSearchInput(): array {
+		return [
+			'q parameter' => [ '', [ 'q' => 'WRGoogleSearch no such page' ] ],
+			'subpage only' => [ 'WRGoogleSearch no such page', [] ],
+			'subpage only, underscores' => [ 'WRGoogleSearch_no_such_page', [] ],
+			'subpage only, fulltext' => [ 'WRGoogleSearch no such page', [ 'fulltext' => '1' ] ],
+			'q parameter, fulltext' => [ '', [ 'q' => 'WRGoogleSearch no such page', 'fulltext' => '1' ] ],
+		];
+	}
+
+	/**
+	 * @dataProvider provideSearchInput
+	 */
+	public function testSearchTermShowsLoadingMessage( string $subPage, array $query ): void {
 		$this->getNonexistingTestPage( 'WRGoogleSearch no such page' );
 
-		[ $html ] = $this->executeSpecialPage(
-			'',
-			new FauxRequest( [ 'q' => 'WRGoogleSearch no such page' ] )
-		);
+		[ $html ] = $this->executeSpecialPage( $subPage, new FauxRequest( $query ) );
 
 		$this->assertSame( '', $this->getRedirect() );
-		$this->assertStringContainsString( 'id="googleSearchResults"', $html );
+		$this->assertStringContainsString(
+			'<div id="googleSearchResults"><div class="google-search-loading">(wrgooglesearch-loading)</div></div>',
+			$html
+		);
+	}
+
+	public function testTermZeroShowsLoadingMessage(): void {
+		$this->getNonexistingTestPage( '0' );
+
+		[ $html ] = $this->executeSpecialPage( '', new FauxRequest( [ 'q' => '0' ] ) );
+
+		$this->assertSame( '', $this->getRedirect() );
 		$this->assertStringContainsString( '(wrgooglesearch-loading)', $html );
+	}
+
+	public function testEmptySearchShowsNoLoadingMessage(): void {
+		[ $html ] = $this->executeSpecialPage( '', new FauxRequest( [] ) );
+
+		$this->assertSame( '', $this->getRedirect() );
+		$this->assertStringContainsString( '<div id="googleSearchResults"></div>', $html );
+		$this->assertStringNotContainsString( 'wrgooglesearch-loading', $html );
 	}
 
 	public function testLoadingMessageIsEscaped(): void {

@@ -28,7 +28,7 @@ class SpecialWRGoogleSearch extends SpecialPage {
 		$request = $this->getRequest();
 
 		// Fetch the search term
-		$searchQuery = $request->getText( 'q', $titleParam ) ?? '';
+		$searchQuery = $request->getText( 'q', $titleParam );
 		$searchQuery = str_replace( "\n", " ", $searchQuery );
 
 		if ( $request->getVal( 'fulltext' ) ) {
@@ -42,9 +42,9 @@ class SpecialWRGoogleSearch extends SpecialPage {
 	/**
 	 * If an exact title match can be found, jump straight ahead to it.
 	 *
-	 * @param string|null $term
+	 * @param string $term
 	 */
-	public function goResult( ?string $term ): void {
+	public function goResult( string $term ): void {
 		# Try to go to page as entered.
 		$t = Title::newFromText( $term );
 
@@ -69,9 +69,9 @@ class SpecialWRGoogleSearch extends SpecialPage {
 		$out = $this->getOutput();
 		$out->addModuleStyles( 'ext.wrGoogleSearch.special' );
 		$out->addModules( 'ext.wrGoogleSearch.special' );
-		$term = $out->getRequest()->getText( 'q' );
 
-		$searchLoadingMsg = ( empty( $term ) ?
+		// The term may come from the subpage as well as from 'q'
+		$searchLoadingMsg = ( $term === '' ?
 			''
 			: '<div class="google-search-loading">' . $this->msg( 'wrgooglesearch-loading' )->escaped() . '</div>' );
 
