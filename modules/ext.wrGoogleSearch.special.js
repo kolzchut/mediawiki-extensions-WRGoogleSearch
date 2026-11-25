@@ -70,17 +70,29 @@ const gs = mw.wrGoogleSearch = {
 			}
 		} );
 
-		// Do we have a pre-filled query? then log a search, because CSE will execute it
-		// immediately
-		const prefilledQuery = gs.getInitialQuery();
-		if ( prefilledQuery ) {
-			gs.logSearchPerformed( prefilledQuery );
+		// A query in the URL ('q' or the 'gsc.q' hash) is executed by CSE itself
+		// immediately, so only log it. Otherwise run the term the page was given
+		// some other way (Special:WRGoogleSearch/term), which CSE cannot see.
+		const urlQuery = gs.getUrlQuery();
+		if ( urlQuery ) {
+			gs.logSearchPerformed( urlQuery );
+		} else {
+			const pageTerm = gs.getPageTerm();
+			if ( pageTerm ) {
+				gs.executeSearch( pageTerm );
+			}
 		}
 	},
 
-	/* This is used only if we have another input on the page, to sync the two */
-	getInitialQuery: function () {
+	/* The query CSE will pick up from the URL on its own */
+	getUrlQuery: function () {
 		return gs.getHashParam( 'gsc.q' ) || mw.util.getParamValue( 'q' );
+	},
+
+	/* The search term as resolved by the special page, from 'q' or the subpage */
+	getPageTerm: function () {
+		const resultsEl = document.getElementById( 'googleSearchResults' );
+		return ( resultsEl && resultsEl.dataset.searchTerm ) || null;
 	},
 
 	getHashParam: function ( key ) {
