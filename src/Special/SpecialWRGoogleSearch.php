@@ -48,9 +48,10 @@ class SpecialWRGoogleSearch extends SpecialPage {
 		# Try to go to page as entered.
 		$t = Title::newFromText( $term );
 
-		# If there's an exact match, jump right there.
+		# If there's an exact match, jump right there. Like core's search,
+		# interwiki titles go through Special:GoToInterwiki.
 		if ( $t !== null && $t->isKnown() ) {
-			$this->getOutput()->redirect( $t->getFullURL() );
+			$this->getOutput()->redirect( $t->getFullUrlForRedirect() );
 			return;
 		}
 
@@ -72,7 +73,7 @@ class SpecialWRGoogleSearch extends SpecialPage {
 
 		$searchLoadingMsg = ( empty( $term ) ?
 			''
-			: '<div class="google-search-loading">' . $this->msg( 'wrgooglesearch-loading' )->text() . '</div>' );
+			: '<div class="google-search-loading">' . $this->msg( 'wrgooglesearch-loading' )->escaped() . '</div>' );
 
 		$outhtml = "<div id=\"googleSearchResults\">$searchLoadingMsg</div>";
 
